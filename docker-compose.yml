@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  db:
+    container_name: "db"
+    build: "db"
+    volumes: 
+      - /data/mysql:/var/lib/mysql
+   
+  backend:
+    container_name: "backend"
+    build: "backend"
+    depends_on:
+      - db
+    ports:
+      - 5000:5000
+
+  balancer:
+    container_name: "balancer"
+    build: "balancer"
+    volumes:
+      - /www/static
+    volumes_from:
+      - backend
+    links:
+      - backend:backend
+    ports: 
+      - "80:80"
+
