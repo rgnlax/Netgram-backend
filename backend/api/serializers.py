@@ -25,8 +25,14 @@ class SenderSerializer(serializers.ModelSerializer):
         model = Sender
         fields = ('id', 'nickname', 'conversations')
 
+class MetaSenderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sender
+        fields = ('id', 'nickname')
+
 class MessageSerializer(serializers.ModelSerializer):
     date = UnixEpochDateField()
+    sender = MetaSenderSerializer()
     class Meta:
         model = Message
         fields = ('id', 'text', 'date', 'sender', 'conversation')

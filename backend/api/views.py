@@ -1,4 +1,5 @@
 from time import mktime
+import datetime
 from api.models import *
 from api.serializers import *
 from rest_framework import mixins, viewsets, filters, status
@@ -33,3 +34,10 @@ class MessageViewSet(mixins.CreateModelMixin,
     serializer_class = MessageSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('sender', 'conversation')
+    def create(self, request):
+        message = Message(text=request.data["text"],
+                          date=datetime.datetime.fromtimestamp(int(request.data["date"])),
+                          sender_id=request.data["sender_id"],
+                          conversation_id=request.data["conversation_id"])
+        message.save()
+        return Response({"Status": "Ok"})
