@@ -1,7 +1,8 @@
-from time import mktime
+# -*- coding: utf-8 -*-
 import datetime
-from api.models import *
-from api.serializers import *
+import hashlib
+from rest.models import *
+from rest.serializers import *
 from rest_framework import mixins, viewsets, filters, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -34,10 +35,14 @@ class MessageViewSet(mixins.CreateModelMixin,
     serializer_class = MessageSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('sender', 'conversation')
+
     def create(self, request):
-        message = Message(text=request.data["text"],
-                          date=datetime.datetime.fromtimestamp(int(request.data["date"])),
-                          sender_id=request.data["sender_id"],
-                          conversation_id=request.data["conversation_id"])
-        message.save()
-        return Response({"Status": "Ok"})
+        if (hashlib.md5(request.data["text"]).hexdigest() == request.data["checksum"]):
+            message = Message(text=request.data["text"],
+                              date=datetime.datetime.fromtimestamp(int(request.data["date"])),
+                              sender_id=request.data["sender_id"],
+                              conversation_id=request.data["conversation_id"])
+            message.save()
+            return Response({"Status": "Ok"})
+        else:
+            return Response({"Status": "Ne Ok"})

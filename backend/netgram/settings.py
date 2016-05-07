@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
-    'api'
+    'rest'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer',),
-    'DEFAULT_PAGINATION_CLASS': 'api.utils.pagination.CustomPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest.utils.pagination.CustomPagination',
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
 }
 

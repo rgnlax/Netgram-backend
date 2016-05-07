@@ -2,7 +2,7 @@
 from datetime import datetime, date
 from random import randint
 
-from api.models import *
+from rest.models import *
 from django.core.management.base import BaseCommand
 
 conversation_count = 50
